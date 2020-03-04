@@ -523,6 +523,8 @@ struct wcd_mbhc {
 	(cfg_ptr->_n_rload * \
 	(sizeof(cfg_ptr->_rload[0]) + sizeof(cfg_ptr->_alpha[0]))))
 
+void wcd_mbhc_plug_detect_for_debug_mode(struct wcd_mbhc *mbhc, int debug_mode); /* ASUS_BSP Paul +++ */
+
 #ifdef CONFIG_SND_SOC_WCD_MBHC
 int wcd_mbhc_set_keycode(struct wcd_mbhc *mbhc);
 int wcd_mbhc_start(struct wcd_mbhc *mbhc,
@@ -533,6 +535,10 @@ int wcd_mbhc_init(struct wcd_mbhc *mbhc, struct snd_soc_codec *codec,
 		      const struct wcd_mbhc_intr *mbhc_cdc_intr_ids,
 		      struct wcd_mbhc_register *mbhc_reg,
 		      bool impedance_det_en);
+/* ASUS_BSP Add delay request irq for fix internal codec headset irq block know issue +++ */
+int wcd_mbhc_init_irq(struct wcd_mbhc *mbhc,
+				struct snd_soc_codec *codec);
+/* ASUS_BSP --- */
 int wcd_mbhc_get_impedance(struct wcd_mbhc *mbhc, uint32_t *zl,
 			   uint32_t *zr);
 void wcd_mbhc_deinit(struct wcd_mbhc *mbhc);
@@ -550,6 +556,13 @@ static inline int wcd_mbhc_init(struct wcd_mbhc *mbhc,
 {
 	return 0;
 }
+/* ASUS_BSP Add delay request irq for fix internal codec headset irq block know issue +++ */
+static inline int wcd_mbhc_init_irq(struct wcd_mbhc *mbhc,
+				struct snd_soc_codec *codec)
+{
+	return 0;
+}
+/* ASUS_BSP --- */
 static inline int wcd_mbhc_start(struct wcd_mbhc *mbhc,
 				 struct wcd_mbhc_config *mbhc_cfg)
 {
